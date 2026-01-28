@@ -18,7 +18,13 @@ func Run() {
 	case "update":
 		UpdateCommand(args[2:])
 	case "list":
-		ListCommand(args[2])
+		{
+			status := ""
+			if len(args) > 2 {
+				status = args[2]
+			}
+			ListCommand(status)
+		}
 	case "delete":
 		DeleteCommand(args[2])
 	case "mark-todo", "mark-in-progress", "mark-done":
