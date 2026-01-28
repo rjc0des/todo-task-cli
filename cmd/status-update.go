@@ -35,6 +35,7 @@ func StatusUpdate(args []string) {
 
 	for i := range db.Tasks {
 		if db.Tasks[i].ID == id {
+
 			switch args[0] {
 			case "mark-todo":
 				update(&db.Tasks[i], model.TaskTodo)
@@ -57,4 +58,5 @@ func StatusUpdate(args []string) {
 			return
 		}
 	}
+	fmt.Println("Task not found")
 }
