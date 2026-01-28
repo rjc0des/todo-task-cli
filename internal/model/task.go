@@ -7,7 +7,7 @@ type TaskStatus string
 const (
 	TaskTodo       TaskStatus = "todo"
 	TaskInprogress TaskStatus = "in-progress"
-	TaskDone       TaskStatus = "Done"
+	TaskDone       TaskStatus = "done"
 )
 
 type Task struct {
@@ -18,7 +18,7 @@ type Task struct {
 	UpdatedAt   time.Time  `json:"updatedAt"`
 }
 
-func (s TaskStatus) isStatusValid() bool {
+func (s TaskStatus) IsStatusValid() bool {
 	switch s {
 	case TaskDone, TaskTodo, TaskInprogress:
 		return true

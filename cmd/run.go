@@ -18,7 +18,7 @@ func Run() {
 	case "update":
 		UpdateCommand(args[2:])
 	case "list":
-		ListCommand()
+		ListCommand(args[2])
 	case "delete":
 		DeleteCommand(args[2])
 	default:
