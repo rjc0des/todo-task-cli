@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+/* Add Task */
 func AddCommand(args string) {
 	if len(args) <= 0 {
 		fmt.Println("Please add task description")
@@ -30,5 +31,5 @@ func AddCommand(args string) {
 	db.Tasks = append(db.Tasks, task)
 	store.Save(db)
 
-	fmt.Println("Task Added", task.Description)
+	fmt.Printf("Task added successfully (ID: %d)\n", task.ID)
 }
