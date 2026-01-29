@@ -6,7 +6,7 @@ import (
 	"task-cli/internal/model"
 )
 
-const fileName = "tasks.json"
+var FileName = "tasks.json"
 
 type Data struct {
 	LastId int          `json:"last_id"`
@@ -19,15 +19,15 @@ func Save(db Data) error {
 		return err
 	}
 
-	return os.WriteFile(fileName, data, 0644)
+	return os.WriteFile(FileName, data, 0644)
 }
 
 func Load() (Data, error) {
-	if _, err := os.Stat(fileName); os.IsNotExist(err) {
+	if _, err := os.Stat(FileName); os.IsNotExist(err) {
 		return Data{LastId: 0, Tasks: []model.Task{}}, nil
 	}
 
-	data, err := os.ReadFile(fileName)
+	data, err := os.ReadFile(FileName)
 
 	if err != nil {
 		return Data{}, err
