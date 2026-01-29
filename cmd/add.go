@@ -8,10 +8,9 @@ import (
 )
 
 /* Add Task */
-func AddCommand(args string) {
+func AddCommand(args string) error {
 	if len(args) <= 0 {
-		fmt.Println("Please add task description")
-		return
+		return fmt.Errorf("Please add task description\n")
 	}
 
 	db, _ := store.Load()
@@ -32,4 +31,5 @@ func AddCommand(args string) {
 	store.Save(db)
 
 	fmt.Printf("Task added successfully (ID: %d)\n", task.ID)
+	return nil
 }

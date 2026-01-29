@@ -7,17 +7,15 @@ import (
 	"time"
 )
 
-func UpdateCommand(args []string) {
+func UpdateCommand(args []string) error {
 	if len(args) != 2 {
-		fmt.Println("Usage: task-cli edit <id> \"new text\"")
-		return
+		return fmt.Errorf("Usage: task-cli update <id> \"new text\"")
 	}
 
 	id, err := strconv.Atoi(args[0])
 
 	if err != nil {
-		fmt.Println("Invalid ID")
-		return
+		return fmt.Errorf("Invalid ID\n")
 	}
 
 	newText := args[1]
@@ -25,8 +23,7 @@ func UpdateCommand(args []string) {
 	db, err := store.Load()
 
 	if err != nil {
-		fmt.Println("File not loaded")
-		return
+		return fmt.Errorf("File not loaded\n")
 	}
 
 	for i := range db.Tasks {
@@ -37,15 +34,13 @@ func UpdateCommand(args []string) {
 			err := store.Save(db)
 
 			if err != nil {
-				fmt.Println("Error saving tasks:", err)
-				return
+				return fmt.Errorf("Error saving tasks: %v\n", err)
 			}
 
 			fmt.Printf("Task Updated: %d\n", id)
-			return
+			return nil
 		}
 	}
 
-	fmt.Println("Task not found")
-
+	return fmt.Errorf("Task not found\n")
 }

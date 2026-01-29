@@ -6,6 +6,12 @@ import (
 	"text/tabwriter"
 )
 
+func errorPrint(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
 func Run() {
 	args := os.Args
 
@@ -15,9 +21,11 @@ func Run() {
 
 	switch args[1] {
 	case "add":
-		AddCommand(args[2])
+		err := AddCommand(args[2])
+		errorPrint(err)
 	case "update":
-		UpdateCommand(args[2:])
+		err := UpdateCommand(args[2:])
+		errorPrint(err)
 	case "list":
 		{
 			status := ""
@@ -27,7 +35,8 @@ func Run() {
 			ListCommand(status)
 		}
 	case "delete":
-		DeleteCommand(args[2])
+		err := DeleteCommand(args[2])
+		errorPrint(err)
 	case "mark-todo", "mark-in-progress", "mark-done":
 		StatusUpdate(args[1:])
 	case "help":

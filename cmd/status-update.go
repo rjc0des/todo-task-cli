@@ -13,24 +13,21 @@ func update(task *model.Task, status model.TaskStatus) {
 	task.UpdatedAt = time.Now()
 }
 
-func StatusUpdate(args []string) {
+func StatusUpdate(args []string) error {
 	if len(args) < 1 {
-		fmt.Println("ID not provided")
-		return
+		return fmt.Errorf("ID not provided\n")
 	}
 
 	id, err := strconv.Atoi(args[1])
 
 	if err != nil {
-		fmt.Println("Invalid ID")
-		return
+		return fmt.Errorf("Invalid ID\n")
 	}
 
 	db, err := store.Load()
 
 	if err != nil {
-		fmt.Println("File not loaded")
-		return
+		return fmt.Errorf("File not loaded\n")
 	}
 
 	for i := range db.Tasks {
@@ -44,19 +41,17 @@ func StatusUpdate(args []string) {
 			case "mark-done":
 				update(&db.Tasks[i], model.TaskDone)
 			default:
-				fmt.Println("Argument not found")
-				return
+				return fmt.Errorf("Argument not found\n")
 			}
 
 			err := store.Save(db)
 			if err != nil {
-				fmt.Println("Error saving tasks:", err)
-				return
+				return fmt.Errorf("Error saving tasks: %d\n", err)
 			}
 
-			fmt.Printf("Task Updated: %d\n", id)
-			return
+			return fmt.Errorf("Task Updated: %d\n", id)
 		}
 	}
 	fmt.Println("Task not found")
+	return nil
 }

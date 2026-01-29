@@ -6,24 +6,21 @@ import (
 	"task-cli/internal/store"
 )
 
-func DeleteCommand(args string) {
+func DeleteCommand(args string) error {
 	if len(args) <= 0 {
-		fmt.Println("Please provide a id")
-		return
+		return fmt.Errorf("Please provide a id\n")
 	}
 
 	id, err := strconv.Atoi(args)
 
 	if err != nil {
-		fmt.Println("Please provide a vaild ID")
-		return
+		return fmt.Errorf("Please provide a vaild ID\n")
 	}
 
 	db, err := store.Load()
 
 	if err != nil {
-		fmt.Println("The file is not loading")
-		return
+		return fmt.Errorf("The file is not loading\n")
 	}
 
 	deleted := false
@@ -42,16 +39,15 @@ func DeleteCommand(args string) {
 	db.Tasks = updated
 
 	if !deleted {
-		fmt.Println("Task ID not found")
-		return
+		return fmt.Errorf("Task ID not found\n")
 	}
 
 	err = store.Save(db)
 
 	if err != nil {
-		fmt.Println("Problem While saving the data")
-		return
+		return fmt.Errorf("Problem While saving the data\n")
 	}
 
 	fmt.Println("Deleted task:", id)
+	return nil
 }

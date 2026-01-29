@@ -8,19 +8,17 @@ import (
 	"text/tabwriter"
 )
 
-func ListCommand(args string) {
+func ListCommand(args string) error {
 	db, err := store.Load()
 
 	if err != nil {
-		fmt.Println("Error while loading the data")
-		return
+		return fmt.Errorf("Error while loading the data\n")
 	}
 
 	fmt.Println("Tasks:")
 
 	if len(db.Tasks) == 0 {
-		fmt.Println("No tasks found")
-		return
+		return fmt.Errorf("No tasks found\n")
 	}
 
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 3, ' ', 0)
@@ -35,8 +33,7 @@ func ListCommand(args string) {
 
 	} else {
 		if !model.TaskStatus.IsStatusValid(model.TaskStatus(args)) {
-			fmt.Println("status invalid")
-			return
+			return fmt.Errorf("status invalid\n")
 		}
 
 		for _, task := range db.Tasks {
@@ -50,4 +47,5 @@ func ListCommand(args string) {
 	}
 
 	w.Flush()
+	return nil
 }
