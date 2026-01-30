@@ -53,7 +53,7 @@ func TestList_AllTask(t *testing.T) {
 
 }
 
-func TestListCommand_InvalidStatus(t *testing.T) {
+func TestList_InvalidStatus(t *testing.T) {
 	testFile := "test-db.json"
 	store.FileName = testFile
 
@@ -108,7 +108,7 @@ func TestList_FilteredStatus(t *testing.T) {
 	}
 }
 
-func TestListCommand_NoTasks(t *testing.T) {
+func TestList_NoTasks(t *testing.T) {
 	store.FileName = "test-empty.json"
 	defer os.Remove(store.FileName)
 
