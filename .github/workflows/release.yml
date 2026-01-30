@@ -47,23 +47,23 @@ jobs:
           echo "Building for macOS ARM"
           GOOS=darwin GOARCH=arm64 go build \
             -ldflags "-X main.Version=$VERSION" \
-            -o dist/tasker-macos-arm64
+            -o dist/task-cli-macos-arm64
 
           echo "Building for Windows"
           GOOS=windows GOARCH=amd64 go build \
             -ldflags "-X main.Version=$VERSION" \
-            -o dist/tasker-windows-amd64.exe
+            -o dist/task-cli-windows-amd64.exe
 
       - name: Package Binaries
         run: |
           cd dist
 
-          zip tasker-linux-amd64.zip tasker-linux-amd64
-          zip tasker-macos-amd64.zip tasker-macos-amd64
-          zip tasker-macos-arm64.zip tasker-macos-arm64
-          zip tasker-windows-amd64.zip tasker-windows-amd64.exe
+          zip task-cli-linux-amd64.zip task-cli-linux-amd64
+          zip task-cli-macos-amd64.zip task-cli-macos-amd64
+          zip task-cli-macos-arm64.zip task-cli-macos-arm64
+          zip task-cli-windows-amd64.zip task-cli-windows-amd64.exe
 
-          rm tasker-linux-amd64 tasker-macos-amd64 tasker-macos-arm64 tasker-windows-amd64.exe
+          rm task-cli-linux-amd64 task-cli-macos-amd64 task-cli-macos-arm64 task-cli-windows-amd64.exe
 
       - name: Publish Release
         uses: softprops/action-gh-release@v2
