@@ -15,7 +15,7 @@ func update(task *model.Task, status model.TaskStatus) {
 
 func StatusUpdate(args []string) error {
 	if len(args) < 1 {
-		return fmt.Errorf("ID not provided\n")
+		return fmt.Errorf("Usage: <mark-todo|mark-in-progress|mark-done> <id>\n")
 	}
 
 	id, err := strconv.Atoi(args[1])
@@ -46,12 +46,12 @@ func StatusUpdate(args []string) error {
 
 			err := store.Save(db)
 			if err != nil {
-				return fmt.Errorf("Error saving tasks: %d\n", err)
+				return fmt.Errorf("Error saving tasks: %v\n", err)
 			}
 
-			return fmt.Errorf("Task Updated: %d\n", id)
+			fmt.Printf("Task Updated: %d\n", id)
+			return nil
 		}
 	}
-	fmt.Println("Task not found")
-	return nil
+	return fmt.Errorf("Task not found")
 }
