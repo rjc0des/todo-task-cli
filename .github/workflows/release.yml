@@ -1,0 +1,71 @@
+name: Build, Test, and Release CLI
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up GO
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.25.5
+
+      - name: Run tests
+        run: go test ./... -v
+
+      - name: Get Version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Build binaries
+        run: |
+          mkdir -p dist
+
+          VERSION=${{ steps.version.outputs.VERSION }}
+
+          echo "Building for Linux"
+          GOOS=linux GOARCH=amd64 go build \
+            -ldflags "-X main.Version=$VERSION" \
+            -o dist/task-cli-linux-amd64
+
+          echo "Building for macOS Intel"
+          GOOS=darwin GOARCH=amd64 go build \
+            -ldflags "-X main.Version=$VERSION" \
+            -o dist/task-cli-macos-amd64
+
+          echo "Building for macOS ARM"
+          GOOS=darwin GOARCH=arm64 go build \
+            -ldflags "-X main.Version=$VERSION" \
+            -o dist/tasker-macos-arm64
+
+          echo "Building for Windows"
+          GOOS=windows GOARCH=amd64 go build \
+            -ldflags "-X main.Version=$VERSION" \
+            -o dist/tasker-windows-amd64.exe
+
+      - name: Package Binaries
+        run: |
+          cd dist
+
+          zip tasker-linux-amd64.zip tasker-linux-amd64
+          zip tasker-macos-amd64.zip tasker-macos-amd64
+          zip tasker-macos-arm64.zip tasker-macos-arm64
+          zip tasker-windows-amd64.zip tasker-windows-amd64.exe
+
+          rm tasker-linux-amd64 tasker-macos-amd64 tasker-macos-arm64 tasker-windows-amd64.exe
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
