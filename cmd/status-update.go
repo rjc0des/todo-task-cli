@@ -53,5 +53,5 @@ func StatusUpdate(args []string) error {
 			return nil
 		}
 	}
-	return fmt.Errorf("Task not found")
+	return fmt.Errorf("Task not found\n")
 }
