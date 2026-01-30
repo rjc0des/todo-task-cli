@@ -14,7 +14,7 @@ func update(task *model.Task, status model.TaskStatus) {
 }
 
 func StatusUpdate(args []string) error {
-	if len(args) < 1 {
+	if len(args) < 2 {
 		return fmt.Errorf("Usage: <mark-todo|mark-in-progress|mark-done> <id>\n")
 	}
 
